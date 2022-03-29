@@ -1,0 +1,16 @@
+@use '../mixins' as ui-mixins;
+
+.mdc-select--fullwidth {
+  display: flex;
+  width: 100%;
+}
+
+.mdc-select__menu .mdc-deprecated-list .mdc-deprecated-list-item--selected {
+  @include ui-mixins.selected;
+}
+
+.mdc-select--in-dialog {
+  .mdc-select__menu {
+    @include ui-mixins.menu-in-dialog;
+  }
+}
