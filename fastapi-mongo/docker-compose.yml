@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+
+  backend:
+    build: ./services/backend
+    ports:
+      - 5000:5000
+    volumes:
+      - ./services/backend:/app
+    command: uvicorn src.main:app --reload --host 0.0.0.0 --port 5000
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - /services/bdd/src/bdd:/data/db
+      #ME_CONFIG_MONGODB_URL: "mongodb://open_bar:open_bar@mongodb:27017"
+
+  frontend:
+    build: ./services/frontend
+    volumes:
+      - './services/frontend:/app'
+      - '/app/node_modules'
+    ports:
+      - 8080:8080
