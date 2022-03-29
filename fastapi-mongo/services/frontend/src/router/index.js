@@ -19,6 +19,11 @@ const routes = [
     path: '/accueil',
     name: 'accueil',
     component: () => import('../views/AccueilView.vue')
+  },
+  {
+    path: '/connexion_inscription',
+    name: 'connexion_inscription',
+    component: () => import('../views/ConnexionInscription.vue')
   }
 ]
 
