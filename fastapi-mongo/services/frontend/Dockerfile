@@ -1,13 +1,22 @@
 FROM node:lts-alpine
 
+# installe un simple serveur http pour servir un contenu statique
+RUN npm install -g http-server
+
+# définit le dossier 'app' comme dossier de travail
 WORKDIR /app
 
-ENV PATH /app/node_modules/.bin:$PATH
+# copie 'package.json' et 'package-lock.json' (si disponible)
+COPY package*.json ./
 
-RUN npm install @vue/cli@4.5.13 -g
-
-COPY package.json .
-COPY package-lock.json .
+# installe les dépendances du projet
 RUN npm install
 
-CMD ["npm", "run", "serve"]
+# copie les fichiers et dossiers du projet dans le dossier de travail (par exemple : le dossier 'app')
+COPY . .
+
+# construit l'app pour la production en la minifiant
+RUN npm run build
+
+EXPOSE 8080
+CMD [ "http-server", "dist" ]

@@ -6,6 +6,10 @@ client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 
 database = client.movies
 
+
+#########################################
+#       Movies_collection
+#########################################
 movies_collection = database.get_collection("movies_collection")
 
 
@@ -46,6 +50,11 @@ async def retrieve_movie(id: str) -> dict:
     if movie:
         return movie_helper(movie)
 
+# Retrieve a movie with a matching name
+async def retrieve_movie_name(name: str) -> dict:
+    movie = await movies_collection.find_one({"fullname": name})
+    if movie:
+        return movie_helper(movie)
 
 # Update a movie with a matching ID
 async def update_movie(id: str, data: dict):
@@ -67,4 +76,74 @@ async def delete_movie(id: str):
     movie = await movies_collection.find_one({"_id": ObjectId(id)})
     if movie:
         await movies_collection.delete_one({"_id": ObjectId(id)})
+        return True
+
+#########################################
+#       Users
+#########################################
+
+users = database.get_collection("users")
+
+
+# helpers
+
+
+def user_helper(user) -> dict:
+    return {
+        "id": str(user["_id"]),
+        "userName": user["userName"],
+        "email": user["email"],
+        "password": user["password"]
+    }
+
+
+
+# Retrieve all user present in the database
+async def retrieve_users():
+    allUsers = []
+    async for user in users.find():
+        allUsers.append(user_helper(user))
+    return allUsers
+
+
+# Add a new user into to the database
+async def add_user(user_data: dict) -> dict:
+    user = await users.insert_one(user_data)
+    new_user = await users.find_one({"_id": user.inserted_id})
+    return user_helper(new_user)
+
+
+# Retrieve a user with a matching ID
+async def retrieve_user(id: str) -> dict:
+    user = await users.find_one({"_id": ObjectId(id)})
+    if user:
+        return user_helper(user)
+
+# Retrieve a user with a matching name
+async def retrieve_user_name(name: str) -> dict:
+    user = await users.find({"userName": name})
+    if user:
+        return user_helper(user)
+
+
+# Update a movie with a matching ID
+async def update_user(id: str, data: dict):
+    # Return false if an empty request body is sent.
+    if len(data) < 1:
+        return False
+    user = await users.find_one({"_id": ObjectId(id)})
+    if user:
+        updated_user = await users.update_one(
+            {"_id": ObjectId(id)}, {"$set": data}
+        )
+        if updated_user:
+            return True
+        return False
+
+
+# Delete a user from the database
+async def delete_user(id: str):
+    user = await users.find_one({"_id": ObjectId(id)})
+    if user:
+        await users.delete_one({"_id": ObjectId(id)})
         return True
