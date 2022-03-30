@@ -11,7 +11,7 @@ COPY package*.json ./
 
 # installe les dépendances du projet
 RUN npm install
-
+RUN npm install --save axios@0.21.1
 # copie les fichiers et dossiers du projet dans le dossier de travail (par exemple : le dossier 'app')
 COPY . .
 

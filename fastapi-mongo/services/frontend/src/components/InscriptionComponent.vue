@@ -37,7 +37,7 @@
                 </ui-form-field>
                 <ui-form-field :class="actionClass">
                     <p hidden>{{ enableSubmit() }}</p>
-                    <ui-button :disabled="isDisabled" raised>Sign In</ui-button>
+                    <ui-button :disabled="isDisabled" @click="SignIn()" raised>Sign In</ui-button>
                 </ui-form-field>
             </template>
         </ui-form>
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+axios.defaults.baseURL = 'http://0.0.0.0:5000/'
 export default {
     data() {
         return {
@@ -52,7 +54,8 @@ export default {
             valueEmail2: '',
             valuePassword1: '',
             valuePassword2: '',
-            isDisabled: true
+            isDisabled: true,
+            form:''
         }
     },
     methods: {
@@ -82,7 +85,14 @@ export default {
             } else {
                 return false
             }
+        },
+        SignIn() {
+        // reformat the payload from [{name: Age, value: 10}, ...] to {Age:10, ...}
+            axios.post("/user/", {"userName":this.valueUsername,"email":this.valueEmail1, "password":this.valuePassword1})
+            //.then()
+            //.catch(e => console.log(e))
         }
+
     }
 }
 </script>
