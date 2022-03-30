@@ -17,8 +17,23 @@
                 </ui-form-field>
                 <ui-form-field :class="actionClass">
                     <p hidden>{{ enableSubmit() }}</p>
-                    <ui-button :disabled="isDisabled" raised>Log In</ui-button>
+                    <ui-button :disabled="isDisabled" @click="open = true" raised>Log In</ui-button>
                 </ui-form-field>
+                <ui-dialog v-model="open" scrollable @confirm="onConfirm" :escapeKey=false>
+                    <ui-dialog-title>
+                        Current mood
+                    </ui-dialog-title>
+                    <ui-dialog-content>
+                        <ui-list>
+                            <ui-item v-for="(item, index) in moodList" :key="index">{{ item }}</ui-item>
+                        </ui-list>
+                    </ui-dialog-content>
+                    <ui-dialog-actions>
+                        <template #default="{ buttonClass }">
+                            <ui-button :class="buttonClass" acceptText @click="redirectToHome()" raised>Confirm</ui-button>
+                        </template>
+                    </ui-dialog-actions>
+                </ui-dialog>
             </template>
         </ui-form>
     </div>
@@ -30,7 +45,9 @@ export default {
         return {
             valueEmail: '',
             valuePassword: '',
-            isDisabled: true
+            isDisabled: true,
+            open: false,
+            moodList: {1: "Happy", 2: "Sad", 3: "None"}
         }
     },
     methods: {
@@ -47,6 +64,16 @@ export default {
             } else {
                 this.isDisabled = true
             }
+        },
+        onConfirm(result) {
+            if (result) {
+                console.log('ok')
+            } else {
+                console.log('cancel')
+            }
+        },
+        redirectToHome() {
+            this.$router.push('/accueil')
         }
     }
 }
