@@ -16,12 +16,14 @@ services:
       - 27017:27017
     volumes:
       - /services/bdd/src/bdd:/data/db
+    #environment:
+     # MONGO_INITDB_ROOT_USERNAME: open_bar
+      #MONGO_INITDB_ROOT_PASSWORD: open_bar
+
+
       #ME_CONFIG_MONGODB_URL: "mongodb://open_bar:open_bar@mongodb:27017"
 
   frontend:
     build: ./services/frontend
-    volumes:
-      - './services/frontend:/app'
-      - '/app/node_modules'
     ports:
       - 8080:8080
