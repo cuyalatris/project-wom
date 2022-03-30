@@ -1,12 +1,12 @@
 <template>
     <div id="inscriptionTitle">
-        <h2>Sign in</h2>
+        <h2>Sign In</h2>
     </div>
     <div id="inscriptionForm">
         <ui-form type="|" item-margin-bottom="16" action-align="center">
             <template #default="{ actionClass }">
                 <ui-form-field>
-                    <ui-textfield outlined id="Username" v-model="valueUsername" input-type="text" pattern=".{4,}" required>
+                    <ui-textfield outlined id="username" v-model="valueUsername" input-type="text" pattern=".{4,}" required>
                         Username
                     </ui-textfield>
                 </ui-form-field>

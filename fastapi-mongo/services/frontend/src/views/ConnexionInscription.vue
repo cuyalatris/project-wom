@@ -2,11 +2,11 @@
   <div id="connexionInscription">
     <div v-if="alreadyUser" id="connexion">
       <ConnexionComponent/>
-      <button v-on:click="changeForm()">Pas encore inscrit ?</button>
+      <ui-button raised @click="changeForm()">Not a user yet ?</ui-button>
     </div>
-    <div v-if="!alreadyUser" id="connexioninscription">
+    <div v-if="!alreadyUser" id="inscription">
       <InscriptionComponent/>
-      <button @click="changeForm()">Déjà inscrit ?</button>
+      <ui-button raised @click="changeForm()">Already a user ?</ui-button>
     </div>
   </div>
 </template>

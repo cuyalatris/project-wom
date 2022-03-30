@@ -5,7 +5,7 @@
       <router-link to="/">Home</router-link> |
       <!-- <router-link to="/about">About</router-link> | -->
       <router-link to="/accueil">Accueil</router-link> |
-      <router-link to="/connexion_inscription">Connexion/Inscription</router-link>
+      <router-link to="/connexion_inscription">Sign In/Log In</router-link>
     </nav>
   </div>
   <router-view/>
