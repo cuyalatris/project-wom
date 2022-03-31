@@ -1,4 +1,2 @@
-fastapi-mongo/services/backend/src/__pycache__/
-fastapi-mongo/services/backend/src/server/__pycache__/
-fastapi-mongo/services/backend/src/server/models/__pycache__/
-fastapi-mongo/services/backend/src/server/routes/__pycache__/
+__pycache__
+*.py[oc]

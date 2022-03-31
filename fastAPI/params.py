@@ -1,5 +1,6 @@
-site = "https://imdb-api.com/API/"
+site = "https://imdb-api.com/en/API/"
 api_key = "k_pp1u5n65/"
+option = "/FullActor,Posters,Images,Trailer,Ratings"
 
 research_dico ={
     "STitle":"SearchTitle/",
@@ -9,6 +10,7 @@ research_dico ={
     "SAll":"SearchAll/",
     "TopMovies":"Top250Movies/",
     "TopSeries":"Top250TVs/",
-    "MsotPopMovies":"MostPopularMovies/",
-    "MostPopSeries":"MostPopularTVs/"
+    "MostPopMovies":"MostPopularMovies/",
+    "MostPopSeries":"MostPopularTVs/",
+    "STitle":"Title/",
 }
