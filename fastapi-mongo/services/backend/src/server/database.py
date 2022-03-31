@@ -18,13 +18,27 @@ movies_collection = database.get_collection("movies_collection")
 
 def movie_helper(movie) -> dict:
     return {
-        "id": str(movie["_id"]),
-        "fullname": movie["fullname"],
-        "genre": movie["genre"],
-        "director": movie["director"],
+        "id": str(movie["id"]),
+        "title": movie["title"],
+        "fullTitle": movie["fullTitle"],
+        "type": movie["type"],
         "year": movie["year"],
-        "lienImage": movie["lienImage"],
-        "duree": movie["duree"],
+        "image": movie["image"],
+        "releaseDate": movie["releaseDate"],
+        "runtimeStr": movie["runtimeStr"],
+        "plot": movie["plot"],
+        "directors": movie["directors"],
+        "writers": movie["writers"],
+        "stars": movie["stars"],
+        "genres": movie["genres"],
+        "companies": movie["companies"],
+        "countries": movie["countries"],
+        "languages": movie["languages"],
+        "contentRating": movie["contentRating"],
+        "imDbRating": movie["imDbRating"],
+        "tagline": movie["tagline"],
+        "keywords": movie["keywords"],
+        "similars": movie["similars"],
     }
 
 
