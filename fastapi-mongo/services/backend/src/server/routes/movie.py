@@ -82,7 +82,9 @@ async def researchTop250():
     test = ""
     response = requests.get(site + research_dico["TopMovies"] + api_key).json()
     for item in response["items"]:
-        test += item["id"]+" , "
+        await getInfos(item["id"])
+        #return item["id"]
+        test += item["id"]+" , "    
     return test
 
 @router.get('/Movies/GetMostPopular')
@@ -97,7 +99,7 @@ async def researchAll(expression):
 
 @router.get('/Movies/GetInfos/{id}')
 async def getInfos(id):
-    response = requests.get(site + research_dico["STitle"] + api_key + id + option).json()
+    response = requests.get(site + research_dico["STitle"] + api_key + id).json()
     jb = copy.deepcopy(response)
     for cle, valeur in jb.items():
         if cle not in list_champ :

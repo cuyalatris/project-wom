@@ -1,6 +1,6 @@
 site = "https://imdb-api.com/en/API/"
-api_key = "k_pp1u5n65/"
-option = "/FullActor,Posters,Images,Ratings"
+#api_key = "k_txls6cbj/" #Mayi
+api_key = "k_pp1u5n65/" #Mathieu
 
 research_dico ={
     "STitle":"SearchTitle/",
