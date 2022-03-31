@@ -78,9 +78,11 @@ async def researchByTitle(title):
 
 @router.get('/Movies/GetTop250Movies')
 async def researchTop250():
+    test = ""
     response = requests.get(site + research_dico["TopMovies"] + api_key).json()
-    
-    return response
+    for item in response["items"]:
+        test += item["id"]+" , "
+    return test
 
 @router.get('/Movies/GetMostPopular')
 async def researchMostPop():
