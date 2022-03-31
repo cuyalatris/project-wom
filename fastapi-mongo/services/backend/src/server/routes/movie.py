@@ -5,6 +5,7 @@ from asyncio.base_subprocess import ReadSubprocessPipeProto
 from urllib import response
 import requests
 import json
+import copy
 
 from src.server.database import (
     add_movie,
@@ -96,7 +97,11 @@ async def researchAll(expression):
 
 @router.get('/Movies/GetInfos/{id}')
 async def getInfos(id):
-    print(site + research_dico["STitle"] + api_key + id + option)
     response = requests.get(site + research_dico["STitle"] + api_key + id + option).json()
+    jb = copy.deepcopy(response)
+    for cle, valeur in jb.items():
+        if cle not in list_champ :
+            response.pop(cle)
+    await add_movie_data(response)
     return response
     #add_movie_data(response):
