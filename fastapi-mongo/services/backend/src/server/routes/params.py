@@ -14,3 +14,27 @@ research_dico ={
     "MostPopSeries":"MostPopularTVs/",
     "STitle":"Title/",
 }
+
+list_champ = {
+    "id",
+    "title",
+    "fullTitle",
+    "type",
+    "year",
+    "image",
+    "releaseDate",
+    "runtimeStr",
+    "plot",
+    "directors",
+    "writers",
+    "stars",
+    "genres",
+    "companies",
+    "countries",
+    "languages",
+    "contentRating",
+    "imDbRating",
+    "tagline",
+    "keywords",
+    "similars"
+}
