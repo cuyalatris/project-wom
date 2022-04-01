@@ -18,7 +18,8 @@ movies_collection = database.get_collection("movies_collection")
 
 def movie_helper(movie) -> dict:
     return {
-        "id": str(movie["id"]),
+        "_id": str(movie["_id"]),
+        "id": movie["id"],
         "title": movie["title"],
         "fullTitle": movie["fullTitle"],
         "type": movie["type"],
@@ -60,13 +61,13 @@ async def add_movie(movie_data: dict) -> dict:
 
 # Retrieve a movie with a matching ID
 async def retrieve_movie(id: str) -> dict:
-    movie = await movies_collection.find_one({"_id": ObjectId(id)})
+    movie = await movies_collection.find_one({"id": id})
     if movie:
         return movie_helper(movie)
 
 # Retrieve a movie with a matching name
 async def retrieve_movie_name(name: str) -> dict:
-    movie = await movies_collection.find_one({"fullname": name})
+    movie = await movies_collection.find_one({"title": name})
     if movie:
         return movie_helper(movie)
 
@@ -75,10 +76,10 @@ async def update_movie(id: str, data: dict):
     # Return false if an empty request body is sent.
     if len(data) < 1:
         return False
-    movie = await movies_collection.find_one({"_id": ObjectId(id)})
+    movie = await movies_collection.find_one({"id": id})
     if movie:
         updated_movie = await movies_collection.update_one(
-            {"_id": ObjectId(id)}, {"$set": data}
+            {"id": id}, {"$set": data}
         )
         if updated_movie:
             return True
@@ -87,9 +88,9 @@ async def update_movie(id: str, data: dict):
 
 # Delete a movie from the database
 async def delete_movie(id: str):
-    movie = await movies_collection.find_one({"_id": ObjectId(id)})
+    movie = await movies_collection.find_one({"id": id})
     if movie:
-        await movies_collection.delete_one({"_id": ObjectId(id)})
+        await movies_collection.delete_one({"id": id})
         return True
 
 #########################################
