@@ -99,11 +99,14 @@ async def researchAll(expression):
 
 @router.get('/Movies/GetInfos/{id}')
 async def getInfos(id):
-    response = requests.get(site + research_dico["STitle"] + api_key + id).json()
-    jb = copy.deepcopy(response)
-    for cle, valeur in jb.items():
-        if cle not in list_champ :
-            response.pop(cle)
-    await add_movie_data(response)
-    return response
-    #add_movie_data(response):
+    inMongo = await get_movie_data(id)
+    if (inMongo["code"]!=200):#verif que pas déjà dans la bdd
+        response = requests.get(site + research_dico["STitle"] + api_key + id).json()
+        jb = copy.deepcopy(response)
+        for cle, valeur in jb.items():
+            if cle not in list_champ :
+                response.pop(cle)
+        await add_movie_data(response)
+        return response
+    else :
+        return "Already in db"

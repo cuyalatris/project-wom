@@ -1,6 +1,8 @@
 site = "https://imdb-api.com/en/API/"
 #api_key = "k_txls6cbj/" #Mayi
-api_key = "k_pp1u5n65/" #Mathieu
+#api_key = "k_pp1u5n65/" #Mathieu
+api_key = "k_egqsvtly/" #bigowe1372@nuesond.com
+
 
 research_dico ={
     "STitle":"SearchTitle/",
