@@ -23,13 +23,12 @@ export default ({
     },
     data() {
         return {
-            alreadyUser: false
+            alreadyUser: true
         }
     },
     methods: {
     changeForm() {
         this.alreadyUser = !this.alreadyUser
-        this.loggedin = true
         console.log(this.loggedin)
         }
     }
