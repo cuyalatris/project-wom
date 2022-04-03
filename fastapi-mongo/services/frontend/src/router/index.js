@@ -24,6 +24,11 @@ const routes = [
     path: '/connexion_inscription',
     name: 'connexion_inscription',
     component: () => import('../views/ConnexionInscription.vue')
+  },
+  {
+    path: '/profil',
+    name: 'profil',
+    component: () => import('../views/ProfilView.vue')
   }
 ]
 

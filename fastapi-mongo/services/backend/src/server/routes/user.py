@@ -9,7 +9,11 @@ from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr, Field
 
 from src.server.database import (
+    add_genre_user,
+    add_movie_userPrefere,
+    add_movie_userVue,
     add_user,
+    delete_movie_userPrefere,
     delete_user,
     retrieve_user,
     retrieve_users,
@@ -52,11 +56,92 @@ async def get_user_data(id):
         return ResponseModel(user, "user data retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "user doesn't exist.")
 
+@router.get("/{id}", response_description="user data retrieved")
+async def get_user_data(id):
+    user = await retrieve_user(id)
+    if user:
+        return ResponseModel(user, "user data retrieved successfully")
+    return ErrorResponseModel("An error occurred.", 404, "user doesn't exist.")
+
 
 @router.put("/{id}")
 async def update_user_data(id: str, req: UpdateUserModel = Body(...)):
     req = {k: v for k, v in req.dict().items() if v is not None}
     updated_user = await update_user(id, req)
+    if updated_user:
+        return ResponseModel(
+            "User with ID: {} name update is successful".format(id),
+            "User name updated successfully",
+        )
+    return ErrorResponseModel(
+        "An error occurred",
+        404,
+        "There was an error updating the user data.",
+    )
+
+@router.put("/prefere/{id}/{newMovie}/")
+async def update_user_moviePref(id: str, newMovie: str):
+    #req = {k: v for k, v in req.dict().items() if v is not None}
+    updated_user = await add_movie_userPrefere(id, newMovie)
+    if updated_user:
+        return ResponseModel(
+            "User with ID: {} name update is successful".format(id),
+            "User name updated successfully",
+        )
+    return ErrorResponseModel(
+        "An error occurred",
+        404,
+        "There was an error updating the user data.",
+    )
+
+@router.put("/delete/prefere/{id}/{newMovie}/")
+async def delete_user_moviePref(id: str, newMovie: str):
+    #req = {k: v for k, v in req.dict().items() if v is not None}
+    updated_user = await delete_movie_userPrefere(id, newMovie)
+    if updated_user:
+        return ResponseModel(
+            "User with ID: {} name update is successful".format(id),
+            "User name updated successfully",
+        )
+    return ErrorResponseModel(
+        "An error occurred",
+        404,
+        "There was an error updating the user data.",
+    )
+
+@router.put("/genre/{id}/{genre}/")
+async def update_user_genre(id: str, newGenre: str):
+    #req = {k: v for k, v in req.dict().items() if v is not None}
+    updated_user = await add_genre_user(id, newGenre)
+    if updated_user:
+        return ResponseModel(
+            "User with ID: {} name update is successful".format(id),
+            "User name updated successfully",
+        )
+    return ErrorResponseModel(
+        "An error occurred",
+        404,
+        "There was an error updating the user data.",
+    )
+@router.put("/delete/genre/{id}/{genre}/")
+async def update_user_moviePref(id: str, newMovie: str):
+    #req = {k: v for k, v in req.dict().items() if v is not None}
+    updated_user = await delete_movie_userPrefere(id, newMovie)
+    if updated_user:
+        return ResponseModel(
+            "User with ID: {} name update is successful".format(id),
+            "User name updated successfully",
+        )
+    return ErrorResponseModel(
+        "An error occurred",
+        404,
+        "There was an error updating the user data.",
+    )
+
+@router.put("/{id}/{newMovie}")
+async def update_user_movieVue(id: str, newMovie: str):
+    #req = {k: v for k, v in req.dict().items() if v is not None}
+    updated_user = await add_movie_userVue(id, newMovie)
     if updated_user:
         return ResponseModel(
             "User with ID: {} name update is successful".format(id),

@@ -42,7 +42,7 @@ async def get_movie_data(id):
     movie = await retrieve_movie(id)
     if movie:
         return ResponseModel(movie, "movie data retrieved successfully")
-    return ErrorResponseModel("An error occurred.", 404, "movie doesn't exist.")
+    return ErrorResponseModel("An error occurred.", 404, "movie "+id+" doesn't exist.")
 
 
 @router.put("/{id}")

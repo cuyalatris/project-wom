@@ -1,6 +1,5 @@
 import time
-from typing import Optional
-
+from typing import Optional, List
 from pydantic import BaseModel, EmailStr, Field
 
 
@@ -8,29 +7,36 @@ class UserSchema(BaseModel):
     userName: str = Field(...)
     email: EmailStr = Field(...)
     password : str = Field(...)
-
+    genre : List[str] = Field(...)
+    filmsVue : List[str] = Field(...)
+    filmsPrefere :  List[str] = Field(...)
 
     class Config:
         schema_extra = {
             "example": {
-                "userName": "Pierre",
-                "email": "pierre@pierre.com",
+                "userName": "Jean",
+                "email": "jean@jean.com",
                 "password": "PeterPan4",
+                "genre" : ["Action","Adventure"],
+                "filmsVue" : ["tt1877830"],
+                "filmsPrefere" : ["tt0114709"]
             }
         }
 
 
 class UpdateUserModel(BaseModel):
-    userName: Optional[str]
+    userName: str
     email: Optional[EmailStr]
     password: Optional[str]
+    genre : Optional[List[str]]
+    filmsVue : Optional[List[str]]
+    filmsPrefere :  Optional[List[str]]
 
     class Config:
         schema_extra = {
              "example": {
-                "userName": "Pierre",
-                "email": "pierre@pierre.com",
-                "password": "PeterPan4",
+                "userName": "Jean",
+                "email": "jean@jean.com"
             }
         }
 
