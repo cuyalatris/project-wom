@@ -25,7 +25,7 @@ from src.server.models.users import (
 class UserLogInSchema(BaseModel):
     email: EmailStr = Field(...)
     password : str = Field(...)
-
+    
 router = APIRouter()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -106,7 +106,7 @@ class TokenData(BaseModel):
     
 class UserInDb(UserSchema):
     password:str
-
+    
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='user/token')
 
 @router.get("/hashtest/")
@@ -123,7 +123,6 @@ def get_user(db, username:str):
     for user in db:
         userName_value = user["email"]
         if userName_value == username:
-            print(user)
             return UserInDb(**user)
     # if username in db:
     #     user_dict = db[username]
@@ -147,7 +146,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(token: str):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -161,7 +160,10 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         token_data = TokenData(userName=userName)
     except JWTError:
         raise credentials_exception
-    user = get_user(fake_users_db, userName=token_data.userName)
+    users_db = await get_users()
+    users_db_data = users_db["data"][0]
+    user = get_user(users_db_data, username=token_data.userName)
+    # user = get_user(fake_users_db, userName=token_data.email)
     if user is None:
         raise credentials_exception
     return user
@@ -175,11 +177,11 @@ async def get_current_active_user(current_user: UserSchema = Depends(get_current
 async def login_for_access_token(UserLogIn: UserLogInSchema = Body(...)):
     users_db = await get_users()
     users_db_data = users_db["data"][0]
-    print("users")
-    print(users_db_data)
-    print("form_data")
-    print(UserLogIn.email +" "+UserLogIn.password)
+    # form_data: OAuth2PasswordRequestForm = Depends()
+    # form_data.username = UserLogIn.email
+    # form_data.password = UserLogIn.password
     user = authenticate_user(users_db_data, UserLogIn.email, UserLogIn.password)
+    # user = authenticate_user(users_db_data, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -188,8 +190,9 @@ async def login_for_access_token(UserLogIn: UserLogInSchema = Body(...)):
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.userName}, expires_delta=access_token_expires
+        data={"sub": user.email}, expires_delta=access_token_expires
     )
+    
     return {"access_token": access_token, "token_type": "bearer"}
     
 @router.get("/users/me/", response_model=UserSchema)
