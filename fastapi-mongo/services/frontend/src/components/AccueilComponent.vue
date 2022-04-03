@@ -5,7 +5,7 @@
             <ui-grid-cell v-for="i in movies" :key="i" class="demo-cell" columns="2">
                 <div class="onemovie">
                     <div class="img_container">
-                        <img v-bind:src="i.image" style="width:100%; height:100%">
+                        <img @click="ViewDetails(i.id)" v-bind:src="i.image" style="width:100%; height:100%">
                     </div>
                     <div class="Titre">
                         <span>{{i.title}}</span>
@@ -74,6 +74,10 @@ export default {
             axios.put("/user/"+this.idUser+"/"+movie)
             //.then((response) => (this.movies = response.data.data[0]))
             
+        },
+        ViewDetails(idmovie){
+            this.$router.push({name: 'movie',params: {idMovie: idmovie}})
+            //this.$router.push('/movie/'+idmovie)
         }
 
     }
