@@ -14,7 +14,10 @@ from src.server.database import (
     add_movie_userVue,
     add_user,
     delete_movie_userPrefere,
+    delete_movie_userVue,
     delete_user,
+    retrieve_moviePref,
+    retrieve_movieVue,
     retrieve_user,
     retrieve_users,
     update_user,
@@ -86,7 +89,7 @@ async def update_user_moviePref(id: str, newMovie: str):
         "There was an error updating the user data.",
     )
 
-@router.put("/delete/prefere/{id}/{newMovie}/")
+@router.delete("/prefere/{id}/{newMovie}/")
 async def delete_user_moviePref(id: str, newMovie: str):
     #req = {k: v for k, v in req.dict().items() if v is not None}
     updated_user = await delete_movie_userPrefere(id, newMovie)
@@ -100,6 +103,25 @@ async def delete_user_moviePref(id: str, newMovie: str):
         404,
         "There was an error updating the user data.",
     )
+
+@router.delete("/prefere/{id}/{newMovie}/")
+async def delete_user_moviePref(id: str, newMovie: str):
+    #req = {k: v for k, v in req.dict().items() if v is not None}
+    updated_user = await delete_movie_userPrefere(id, newMovie)
+    if updated_user:
+        return ResponseModel(
+            "User with ID: {} name update is successful".format(id),
+            "User name updated successfully",
+        )
+    return ErrorResponseModel(
+        "An error occurred",
+        404,
+        "There was an error updating the user data.",
+    )
+
+@router.get("/prefere/{id}/{newMovie}")
+async def is_user_moviePref(id: str, newMovie: str):
+    return await retrieve_moviePref(id, newMovie)
 
 @router.put("/genre/{id}/{genre}/")
 async def update_user_genre(id: str, newGenre: str):
@@ -115,7 +137,7 @@ async def update_user_genre(id: str, newGenre: str):
         404,
         "There was an error updating the user data.",
     )
-@router.put("/delete/genre/{id}/{genre}/")
+@router.delete("/genre/{id}/{genre}/")
 async def update_user_moviePref(id: str, newMovie: str):
     #req = {k: v for k, v in req.dict().items() if v is not None}
     updated_user = await delete_movie_userPrefere(id, newMovie)
@@ -145,6 +167,24 @@ async def update_user_movieVue(id: str, newMovie: str):
         "There was an error updating the user data.",
     )
 
+@router.delete("/{id}/{newMovie}")
+async def delete_user_movieVue(id: str, newMovie: str):
+    #req = {k: v for k, v in req.dict().items() if v is not None}
+    updated_user = await delete_movie_userVue(id, newMovie)
+    if updated_user:
+        return ResponseModel(
+            "User with ID: {} name update is successful".format(id),
+            "User name updated successfully",
+        )
+    return ErrorResponseModel(
+        "An error occurred",
+        404,
+        "There was an error updating the user data.",
+    )
+
+@router.get("/{id}/{newMovie}")
+async def is_user_movieVue(id: str, newMovie: str):
+    return await retrieve_movieVue(id, newMovie)
 
 @router.delete("/{id}", response_description="User data deleted from the database")
 async def delete_user_data(id: str):

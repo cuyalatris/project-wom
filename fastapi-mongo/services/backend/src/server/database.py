@@ -1,3 +1,4 @@
+from xmlrpc.client import boolean
 import motor.motor_asyncio
 from bson.objectid import ObjectId
 from pydantic import EmailStr
@@ -144,6 +145,21 @@ async def retrieve_user_name(name: str) -> dict:
     if user:
         return user_helper(user)
 
+# Retrieve true or false wether the movie is part of the pref vue list
+async def retrieve_moviePref(id: str, movie : str) -> bool:
+    user = await users.find_one({"_id" : ObjectId(id), "filmsPrefere": movie})
+    if user:
+        return True
+    else:
+        return False
+
+# Retrieve true or false wether the movie is part of the user vue list
+async def retrieve_movieVue(id: str, movie : str) -> bool:
+    user = await users.find_one({"_id" : ObjectId(id), "filmsVue": movie})
+    if user:
+        return True
+    else:
+        return False
 
 # Update a user with a matching ID
 async def update_user(id: str, data: dict):
@@ -197,7 +213,6 @@ async def delete_movie_userVue(id: str, data: str):
         if updated_user:
             return True
         return False
-
 
 
 async def add_movie_userPrefere(id: str, data: str):
