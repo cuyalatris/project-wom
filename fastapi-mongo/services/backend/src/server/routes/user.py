@@ -2,6 +2,7 @@ from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
 
 from src.server.database import (
+    add_movie_userVue,
     add_user,
     delete_user,
     retrieve_user,
@@ -38,11 +39,33 @@ async def get_user_data(id):
         return ResponseModel(user, "user data retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "user doesn't exist.")
 
+@router.get("/{id}", response_description="user data retrieved")
+async def get_user_data(id):
+    user = await retrieve_user(id)
+    if user:
+        return ResponseModel(user, "user data retrieved successfully")
+    return ErrorResponseModel("An error occurred.", 404, "user doesn't exist.")
+
 
 @router.put("/{id}")
 async def update_user_data(id: str, req: UpdateUserModel = Body(...)):
     req = {k: v for k, v in req.dict().items() if v is not None}
     updated_user = await update_user(id, req)
+    if updated_user:
+        return ResponseModel(
+            "User with ID: {} name update is successful".format(id),
+            "User name updated successfully",
+        )
+    return ErrorResponseModel(
+        "An error occurred",
+        404,
+        "There was an error updating the user data.",
+    )
+
+@router.put("/{id}/{newMovie}")
+async def update_user_moviePref(id: str, newMovie: str):
+    #req = {k: v for k, v in req.dict().items() if v is not None}
+    updated_user = await add_movie_userVue(id, newMovie)
     if updated_user:
         return ResponseModel(
             "User with ID: {} name update is successful".format(id),

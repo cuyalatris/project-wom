@@ -108,7 +108,10 @@ def user_helper(user) -> dict:
         "id": str(user["_id"]),
         "userName": user["userName"],
         "email": user["email"],
-        "password": user["password"]
+        "password": user["password"],
+        "genre" : user["genre"],
+        "filmsVue" : user["filmsVue"],
+        "filmsPrefere" : user["filmsPrefere"]
     }
 
 
@@ -141,7 +144,7 @@ async def retrieve_user_name(name: str) -> dict:
         return user_helper(user)
 
 
-# Update a movie with a matching ID
+# Update a user with a matching ID
 async def update_user(id: str, data: dict):
     # Return false if an empty request body is sent.
     if len(data) < 1:
@@ -155,6 +158,19 @@ async def update_user(id: str, data: dict):
             return True
         return False
 
+# Update a movie with a matching ID
+async def add_movie_userVue(id: str, data: str):
+    # Return false if an empty request body is sent.
+    if len(data) < 1:
+        return False
+    user = await users.find_one({"_id": ObjectId(id)})
+    if user:
+        updated_user = await users.update_one(
+            {"_id": ObjectId(id)}, {"$push": {"filmsVue" : data}} , upsert = True
+        )
+        if updated_user:
+            return True
+        return False
 
 # Delete a user from the database
 async def delete_user(id: str):
