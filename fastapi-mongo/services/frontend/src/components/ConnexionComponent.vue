@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import {store} from './../store.js'
 import axios from 'axios'
 axios.defaults.baseURL = 'http://0.0.0.0:5000/'
 export default {
@@ -50,7 +51,8 @@ export default {
             valuePassword: '',
             isDisabled: true,
             open: false,
-            moodList: {1: "Happy", 2: "Sad", 3: "None"}
+            moodList: {1: "Happy", 2: "Sad", 3: "None"},
+            accessTokenData: ''
         }
     },
     methods: {
@@ -79,13 +81,19 @@ export default {
             this.$router.push('/accueil')
         },
         logIn() {
-            axios.post("/user/token/", {"email":this.valueEmail,"password":this.valuePassword})
+            this.accessTokenData = axios.post("/user/token/", {"email":this.valueEmail,"password":this.valuePassword})
                 .then((response) => {
-                    console.log(response)
+                    console.log(response.data.access_token)
+                    store.set_access_token(response.data.access_token)
                     this.$router.push('/')
-                }, (error) => {
-                    console.log(error)
                 })
+                // .then((response) => {
+                //     this.accessTokenData = response.data.access_token
+                //     this.$router.push('/')
+                // }, (error) => {
+                //     console.log(error)
+                // })
+            console.log(this.accessTokenData)
         }
     }
 }
