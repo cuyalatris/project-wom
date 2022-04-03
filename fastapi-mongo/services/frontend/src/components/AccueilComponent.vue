@@ -57,9 +57,6 @@ export default {
             //.catch(e => console.log(e))
             console.log(this.movies)
         },
-        checkedMonuted(){
-            console.log("Is mounted")
-        },
         isFilmVue(movie, bool) {
             axios.get("user/"+this.idUser+"/"+movie)
             .then((response) => (bool = response))
