@@ -1,9 +1,24 @@
 <template>
   <div>
     <h1>Coucou c'est la vue du film</h1>
-    <span>Le nom du film 1: {{movie.name}}</span>
-    <span>Le nom du film 2: {{idMovie}}</span>
-    <!-- <MovieComponent/> -->
+    <div class="Moviename">
+        <span>Nom : {{movie.title}}</span>
+    </div>
+    <div>
+        <span>Plot : {{movie.plot}}</span>
+    </div>
+    <div>
+        <span>Rating : {{movie.imDbRating}}</span>
+    </div>
+    <div>
+        <img :src="movie.image">
+    </div>
+    <div>
+        <span>Release Date : {{movie.releaseDate}}</span>
+    </div>
+    <div>
+        <span>Runtime : {{movie.runtimeStr}}</span>
+    </div>
   </div>
 </template>
 
