@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>Accueil</h1>
-    <span>C'est le composant</span>
     <AccueilComponent/>
   </div>
 </template>
