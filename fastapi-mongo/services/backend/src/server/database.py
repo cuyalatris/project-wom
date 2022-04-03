@@ -157,8 +157,20 @@ async def update_user(id: str, data: dict):
         if updated_user:
             return True
         return False
-
-# Update a movie with a matching ID
+# Update a fav genre in the list of the user with a matching ID
+async def add_genre_user(id: str, data: str):
+    # Return false if an empty request body is sent.
+    if len(data) < 1:
+        return False
+    user = await users.find_one({"_id": ObjectId(id)})
+    if user:
+        updated_user = await users.update_one(
+            {"_id": ObjectId(id)}, {"$push": {"genre" : data}} , upsert = True
+        )
+        if updated_user:
+            return True
+        return False
+# Update a movie seen in the list of the user with a matching ID
 async def add_movie_userVue(id: str, data: str):
     # Return false if an empty request body is sent.
     if len(data) < 1:
@@ -167,6 +179,47 @@ async def add_movie_userVue(id: str, data: str):
     if user:
         updated_user = await users.update_one(
             {"_id": ObjectId(id)}, {"$push": {"filmsVue" : data}} , upsert = True
+        )
+        if updated_user:
+            return True
+        return False
+
+async def delete_movie_userVue(id: str, data: str):
+    # Return false if an empty request body is sent.
+    if len(data) < 1:
+        return False
+    user = await users.find_one({"_id": ObjectId(id)})
+    if user:
+        updated_user = await users.update_one(
+            {"_id": ObjectId(id)}, {"$pull": {"filmsVue" : data}} , upsert = True
+        )
+        if updated_user:
+            return True
+        return False
+
+
+
+async def add_movie_userPrefere(id: str, data: str):
+    # Return false if an empty request body is sent.
+    if len(data) < 1:
+        return False
+    user = await users.find_one({"_id": ObjectId(id)})
+    if user:
+        updated_user = await users.update_one(
+            {"_id": ObjectId(id)}, {"$push": {"filmsPrefere" : data}} , upsert = True
+        )
+        if updated_user:
+            return True
+        return False
+
+async def delete_movie_userPrefere(id: str, data: str):
+    # Return false if an empty request body is sent.
+    if len(data) < 1:
+        return False
+    user = await users.find_one({"_id": ObjectId(id)})
+    if user:
+        updated_user = await users.update_one(
+            {"_id": ObjectId(id)}, {"$pull": {"filmsPrefere" : data}} , upsert = True
         )
         if updated_user:
             return True

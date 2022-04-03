@@ -13,7 +13,7 @@
                 {{ item.title }}
             </li>
         </ul>
-        genres préférés44
+        genres préférés444
         <ul id="example-1">
             <li v-for="item in idGenre" :key="item">
                 {{ item }}

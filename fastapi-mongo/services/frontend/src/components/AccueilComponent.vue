@@ -1,14 +1,26 @@
 <template>
     <div>   
         <ui-grid class="gridou" position="center">
+
             <ui-grid-cell v-for="i in movies" :key="i" class="demo-cell" columns="2">
                 <div class="onemovie">
                     <div class="img_container">
-                        <img v-bind:src="i.image">
+                        <img v-bind:src="i.image" style="width:100%; height:100%">
                     </div>
                     <div class="Titre">
                         <span>{{i.title}}</span>
                     </div>
+                        <ui-icon-button @click="AddFilmPrefere(i.id)" v-model="value1" :toggle="mdcIcon"> </ui-icon-button>
+                        <ui-icon-button @click="AddFilmVue(i.id)">
+                        <template #default="{ onClass, offClass }" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" :class="onClass">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" :class="offClass" >
+                            <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                            </svg>
+                        </template>
+                        </ui-icon-button>
                 </div>
             </ui-grid-cell>
         </ui-grid>
@@ -18,227 +30,56 @@
 <script>
 import axios from 'axios'
 axios.defaults.baseURL = 'http://0.0.0.0:5000/'
-
+const mdcIcon = {
+  on: 'favorite',
+  off: 'favorite_border'
+};
 export default {
     data() {
         return {
-            movies :[
-            {
-                "_id": "62459883eb47253124acbf8f",
-                "id": "tt1877830",
-                "title": "The Batman",
-                "fullTitle": "The Batman (2022)",
-                "type": "Movie",
-                "year": "2022",
-                "image": "https://imdb-api.com/images/original/MV5BMDdmMTBiNTYtMDIzNi00NGVlLWIzMDYtZTk3MTQ3NGQxZGEwXkEyXkFqcGdeQXVyMzMwOTU5MDk@._V1_Ratio0.6751_AL_.jpg",
-                "releaseDate": "2022-03-04",
-                "runtimeStr": "2h 56min",
-                "plot": "When the Riddler, a sadistic serial killer, begins murdering key political figures in Gotham, Batman is forced to investigate the city's hidden corruption and question his family's involvement.",
-                "directors": "Matt Reeves",
-                "writers": "Matt Reeves, Peter Craig, Bill Finger",
-                "stars": "Robert Pattinson, Zoë Kravitz, Jeffrey Wright",
-                "genres": "Action, Crime, Drama",
-                "companies": "Warner Bros., 6th & Idaho Productions, DC Comics",
-                "countries": "USA",
-                "languages": "English",
-                "contentRating": "PG-13",
-                "imDbRating": "8.3",
-                "tagline": "Unmask The Truth",
-                "keywords": "superhero,batman character,based on comic,dc comics,gotham city",
-                "similars": [
-                {
-                    "id": "tt0468569",
-                    "title": "The Dark Knight",
-                    "image": "https://imdb-api.com/images/original/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "9.1"
-                },
-                {
-                    "id": "tt0372784",
-                    "title": "Batman Begins",
-                    "image": "https://imdb-api.com/images/original/MV5BOTY4YjI2N2MtYmFlMC00ZjcyLTg3YjEtMDQyM2ZjYzQ5YWFkXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.3"
-                },
-                {
-                    "id": "tt10872600",
-                    "title": "Spider-Man: No Way Home",
-                    "image": "https://imdb-api.com/images/original/MV5BZWMyYzFjYTYtNTRjYi00OGExLWE2YzgtOGRmYjAxZTU3NzBiXkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.5"
-                },
-                {
-                    "id": "tt1345836",
-                    "title": "The Dark Knight Rises",
-                    "image": "https://imdb-api.com/images/original/MV5BMTk4ODQzNDY3Ml5BMl5BanBnXkFtZTcwODA0NTM4Nw@@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.4"
-                },
-                {
-                    "id": "tt7286456",
-                    "title": "Joker",
-                    "image": "https://imdb-api.com/images/original/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.4"
-                },
-                {
-                    "id": "tt1464335",
-                    "title": "Uncharted",
-                    "image": "https://imdb-api.com/images/original/MV5BMWEwNjhkYzYtNjgzYy00YTY2LThjYWYtYzViMGJkZTI4Y2MyXkEyXkFqcGdeQXVyNTM0OTY1OQ@@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "6.7"
-                },
-                {
-                    "id": "tt0096895",
-                    "title": "Batman",
-                    "image": "https://imdb-api.com/images/original/MV5BMTYwNjAyODIyMF5BMl5BanBnXkFtZTYwNDMwMDk2._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "7.5"
-                },
-                {
-                    "id": "tt4154796",
-                    "title": "Avengers: Endgame",
-                    "image": "https://imdb-api.com/images/original/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.4"
-                },
-                {
-                    "id": "tt2463208",
-                    "title": "The Adam Project",
-                    "image": "https://imdb-api.com/images/original/MV5BOWM0YWMwMDQtMjE5NS00ZTIwLWE1NWEtODViMWZjMWI2OTU3XkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "6.7"
-                },
-                {
-                    "id": "tt4154756",
-                    "title": "Avengers: Infinity War",
-                    "image": "https://imdb-api.com/images/original/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.5"
-                },
-                {
-                    "id": "tt1160419",
-                    "title": "Dune",
-                    "image": "https://imdb-api.com/images/original/MV5BN2FjNmEyNWMtYzM0ZS00NjIyLTg5YzYtYThlMGVjNzE1OGViXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.1"
-                },
-                {
-                    "id": "tt13560574",
-                    "title": "X",
-                    "image": "https://imdb-api.com/images/original/MV5BMTJiMmE5YWItOWZjYS00YTg0LWE0MTYtMzg2ZTY4YjNkNDEzXkEyXkFqcGdeQXVyMTAzMDg4NzU0._V1_Ratio0.8019_AL_.jpg",
-                    "imDbRating": "7.3"
-                }
-                ]
-            },
-            {
-                "_id": "62459883eb47253124acbf8f",
-                "id": "tt1877831",
-                "title": "The Batman WISH",
-                "fullTitle": "The Batman (2022)",
-                "type": "Movie",
-                "year": "2022",
-                "image": "https://imdb-api.com/images/original/MV5BMDdmMTBiNTYtMDIzNi00NGVlLWIzMDYtZTk3MTQ3NGQxZGEwXkEyXkFqcGdeQXVyMzMwOTU5MDk@._V1_Ratio0.6751_AL_.jpg",
-                "releaseDate": "2022-03-04",
-                "runtimeStr": "2h 56min",
-                "plot": "When the Riddler, a sadistic serial killer, begins murdering key political figures in Gotham, Batman is forced to investigate the city's hidden corruption and question his family's involvement.",
-                "directors": "Matt Reeves",
-                "writers": "Matt Reeves, Peter Craig, Bill Finger",
-                "stars": "Robert Pattinson, Zoë Kravitz, Jeffrey Wright",
-                "genres": "Action, Crime, Drama",
-                "companies": "Warner Bros., 6th & Idaho Productions, DC Comics",
-                "countries": "USA",
-                "languages": "English",
-                "contentRating": "PG-13",
-                "imDbRating": "8.3",
-                "tagline": "Unmask The Truth",
-                "keywords": "superhero,batman character,based on comic,dc comics,gotham city",
-                "similars": [
-                {
-                    "id": "tt0468569",
-                    "title": "The Dark Knight",
-                    "image": "https://imdb-api.com/images/original/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "9.1"
-                },
-                {
-                    "id": "tt0372784",
-                    "title": "Batman Begins",
-                    "image": "https://imdb-api.com/images/original/MV5BOTY4YjI2N2MtYmFlMC00ZjcyLTg3YjEtMDQyM2ZjYzQ5YWFkXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.3"
-                },
-                {
-                    "id": "tt10872600",
-                    "title": "Spider-Man: No Way Home",
-                    "image": "https://imdb-api.com/images/original/MV5BZWMyYzFjYTYtNTRjYi00OGExLWE2YzgtOGRmYjAxZTU3NzBiXkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.5"
-                },
-                {
-                    "id": "tt1345836",
-                    "title": "The Dark Knight Rises",
-                    "image": "https://imdb-api.com/images/original/MV5BMTk4ODQzNDY3Ml5BMl5BanBnXkFtZTcwODA0NTM4Nw@@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.4"
-                },
-                {
-                    "id": "tt7286456",
-                    "title": "Joker",
-                    "image": "https://imdb-api.com/images/original/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.4"
-                },
-                {
-                    "id": "tt1464335",
-                    "title": "Uncharted",
-                    "image": "https://imdb-api.com/images/original/MV5BMWEwNjhkYzYtNjgzYy00YTY2LThjYWYtYzViMGJkZTI4Y2MyXkEyXkFqcGdeQXVyNTM0OTY1OQ@@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "6.7"
-                },
-                {
-                    "id": "tt0096895",
-                    "title": "Batman",
-                    "image": "https://imdb-api.com/images/original/MV5BMTYwNjAyODIyMF5BMl5BanBnXkFtZTYwNDMwMDk2._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "7.5"
-                },
-                {
-                    "id": "tt4154796",
-                    "title": "Avengers: Endgame",
-                    "image": "https://imdb-api.com/images/original/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.4"
-                },
-                {
-                    "id": "tt2463208",
-                    "title": "The Adam Project",
-                    "image": "https://imdb-api.com/images/original/MV5BOWM0YWMwMDQtMjE5NS00ZTIwLWE1NWEtODViMWZjMWI2OTU3XkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "6.7"
-                },
-                {
-                    "id": "tt4154756",
-                    "title": "Avengers: Infinity War",
-                    "image": "https://imdb-api.com/images/original/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.5"
-                },
-                {
-                    "id": "tt1160419",
-                    "title": "Dune",
-                    "image": "https://imdb-api.com/images/original/MV5BN2FjNmEyNWMtYzM0ZS00NjIyLTg5YzYtYThlMGVjNzE1OGViXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_Ratio0.6763_AL_.jpg",
-                    "imDbRating": "8.1"
-                },
-                {
-                    "id": "tt13560574",
-                    "title": "X",
-                    "image": "https://imdb-api.com/images/original/MV5BMTJiMmE5YWItOWZjYS00YTg0LWE0MTYtMzg2ZTY4YjNkNDEzXkEyXkFqcGdeQXVyMTAzMDg4NzU0._V1_Ratio0.8019_AL_.jpg",
-                    "imDbRating": "7.3"
-                }
-                ]
-            }
-            ]
-            //movies:[],
+            mdcIcon,
+            movies: [],
+            //value1: false,
+            value2: true,
+            idUser : '62488f129310318cdc2aff1c'
         }
+    },
+    mounted(){
+        this.GetMovies()
+        //axios.get("/movie")
+          //  .then(response => (this.movies = response))
     },
     methods: {
         GetMovies() {
-            axios.get("/movie/")
-            .then((response) => {this.movies.push(response.data)})
+            axios.get("/movie")
+            .then((response) => (this.movies = response.data.data[0]))
             //.catch(e => console.log(e))
             console.log(this.movies)
         },
         checkedMonuted(){
             console.log("Is mounted")
+        },
+        AddFilmPrefere(movie){
+           // if (!this.value1) {
+                axios.put("/user/prefere/"+this.idUser+"/"+movie)
+            //} else {
+                //enlever le film de la liste des vus
+                axios.put("user/delete/prefere/"+this.idUser+"/"+movie)
+            //}
+            //this.value1 = !this.value1
+            //.then((response) => (this.movies = response.data.data[0]))
+            
+        },
+        AddFilmVue(movie) {
+            axios.put("/user/"+this.idUser+"/"+movie)
+            //.then((response) => (this.movies = response.data.data[0]))
+            
         }
-    },
-    mounted(){
-        this.checkedMonuted()
-        this.GetMovies()
+
     }
 }
 </script>
 
 <style scoped lang="scss">
-    
+    @use 'balm-ui/components/icon-button/icon-button';
 </style>
