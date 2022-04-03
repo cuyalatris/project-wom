@@ -7,9 +7,9 @@ class UserSchema(BaseModel):
     userName: str = Field(...)
     email: EmailStr = Field(...)
     password : str = Field(...)
-    genre : List[str] = Field(...)
-    filmsVue : List[str] = Field(...)
-    filmsPrefere :  List[str] = Field(...)
+    genre : Optional[List[str]]
+    filmsVue : Optional[List[str]]
+    filmsPrefere :  Optional[List[str]]
 
     class Config:
         schema_extra = {

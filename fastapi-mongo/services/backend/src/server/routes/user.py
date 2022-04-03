@@ -49,20 +49,12 @@ async def get_users():
     return ResponseModel(users, "Empty list returned")
 
 
-@router.get("/{id}", response_description="user data retrieved")
-async def get_user_data(id):
-    user = await retrieve_user(id)
+@router.get("/{email}", response_description="user data retrieved")
+async def get_user_data(email):
+    user = await retrieve_user(email)
     if user:
         return ResponseModel(user, "user data retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "user doesn't exist.")
-
-@router.get("/{id}", response_description="user data retrieved")
-async def get_user_data(id):
-    user = await retrieve_user(id)
-    if user:
-        return ResponseModel(user, "user data retrieved successfully")
-    return ErrorResponseModel("An error occurred.", 404, "user doesn't exist.")
-
 
 @router.put("/{id}")
 async def update_user_data(id: str, req: UpdateUserModel = Body(...)):

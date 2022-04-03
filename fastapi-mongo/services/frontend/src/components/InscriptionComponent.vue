@@ -88,10 +88,10 @@ export default {
         },
         SignIn() {
         // reformat the payload from [{name: Age, value: 10}, ...] to {Age:10, ...}
-            axios.post("/user/", {"userName":this.valueUsername,"email":this.valueEmail1, "password":this.valuePassword1})
+            axios.post("/user/", {"userName":this.valueUsername,"email":this.valueEmail1, "password":this.valuePassword1, "genre":[], "filmsVue":[], "filmsPrefere":[]})
                 .then((response) => {
                     console.log(response)
-                    this.$router.go()
+                    this.$router.push({ name: 'connexion_inscription' })
                 }, (error) => {
                     console.log(error)
                 });

@@ -2,11 +2,11 @@
   <div class="header">
     <HeaderComponent/>
     <nav>
-      <router-link to="/">Home</router-link> |
+      <!-- <router-link to="/">Home</router-link> | -->
       <!-- <router-link to="/about">About</router-link> | -->
-      <router-link to="/accueil">Accueil</router-link> |
-      <router-link to="/connexion_inscription">Sign In/Log In</router-link> | 
-      <router-link to="/profil">Profil</router-link>
+      <router-link v-if="store.get_access_token() !== ''" to="/accueil">Accueil | </router-link>
+      <router-link v-if="store.get_access_token() == ''" to="/connexion_inscription">Sign In/Log In</router-link>
+      <router-link v-if="store.get_access_token() !== ''" to="/profil">Profil</router-link>
     </nav>
   </div>
   <router-view/>
@@ -14,10 +14,16 @@
 
 <script>
 import HeaderComponent from '@/components/HeaderComponent.vue'
+import { store } from './store.js'
 
 export default {
   components: {
     HeaderComponent
+  },
+  data() {
+    return {
+      store
+    }
   }
 }
 

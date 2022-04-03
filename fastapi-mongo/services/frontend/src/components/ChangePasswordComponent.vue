@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { store } from './../store.js'
 import axios from 'axios'
 axios.defaults.baseURL = 'http://0.0.0.0:5000/'
 export default {
@@ -53,13 +54,18 @@ export default {
             valueNewPassword2: '',
             isDisabled: true,
             modified : false,
-            idUser : '62441cbacb2d9a19dde02394'
+            idUser : '62441cbacb2d9a19dde02394',
+            userData: {},
+            store
         }
+    },
+    mounted() {
+        this.userData = this.getUserData()._id
     },
     methods: {
         checkLastPassword() {
             axios.get("/user/"+this.idUser)
-            .then(response => (this.truePassword = response.data.data[0].password))
+            .then(response => (this.truePassword = response.data.password))
             return(this.truePassword == this.valueTryPassword)
         },
         checkSamePassword() {
@@ -85,6 +91,19 @@ export default {
             this.modified = true
             //.then()
             //.catch(e => console.log(e))
+        },
+        getUserData() {
+            this.current_access_token = store.get_access_token()
+            this.current_user_data = axios.get('/user/users/me/', {
+                params: {
+                token: this.current_access_token
+                }
+            })
+                .then((response) => {
+                console.log(response.data)
+                })
+            console.log(this.current_user_data)
+            return this.current_user_data
         }
 
     }

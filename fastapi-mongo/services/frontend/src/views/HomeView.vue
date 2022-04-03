@@ -29,7 +29,7 @@ export default {
   methods: {
     getUserData() {
       this.current_access_token = store.get_access_token()
-      this.current_user_data = axios.get('/user/users/me', {
+      this.current_user_data = axios.get('/user/users/me/', {
         params: {
           token: this.current_access_token
         }

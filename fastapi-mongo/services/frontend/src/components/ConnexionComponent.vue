@@ -85,7 +85,7 @@ export default {
                 .then((response) => {
                     console.log(response.data.access_token)
                     store.set_access_token(response.data.access_token)
-                    this.$router.push('/')
+                    this.$router.push({ name: 'accueil'})
                 })
                 // .then((response) => {
                 //     this.accessTokenData = response.data.access_token

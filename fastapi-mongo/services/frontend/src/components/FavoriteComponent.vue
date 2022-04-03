@@ -24,6 +24,7 @@
 
 <script>
 import axios from 'axios'
+import { store } from './../store.js'
 axios.defaults.baseURL = 'http://0.0.0.0:5000/'
 export default {
     data() {
@@ -37,17 +38,20 @@ export default {
             preferes : [],
             film : '',
             idPreferes: ['tt1877830','tt0111161','tt0068646'],
-            idUser: '62488f129310318cdc2aff1c'
+            idUser: '62488f129310318cdc2aff1c',
+            userData: {},
+            store
         }
     },
      mounted () {
+        this.userData = this.getUserData()._id
         //this.idUser = récupérer l'id de l'user
-        axios.get("/user/"+this.idUser)
-            .then(response => (this.idGenre = response.data.data[0].genre))
-        axios.get("/user/"+this.idUser)
-            .then(response => (this.getMovieInfoVus(response.data.data[0].filmsVue)))
-        axios.get("/user/"+this.idUser)
-            .then(response => (this.getMovieInfoPreferes(response.data.data[0].filmsPrefere)))
+        axios.get("/user/"+this.userData)
+            .then(response => (this.idGenre = response.data.genre))
+        axios.get("/user/"+this.userData)
+            .then(response => (this.getMovieInfoVus(response.data.filmsVue)))
+        axios.get("/user/"+this.userData)
+            .then(response => (this.getMovieInfoPreferes(response.data.filmsPrefere)))
         
         
             
@@ -61,16 +65,29 @@ export default {
         getMovieInfoPreferes(tabmovie) {
             for (let index = 0; index < tabmovie.length; index++) {
                 axios.get("/movie/"+tabmovie[index])
-                .then(response => (this.preferes.push(response.data.data[0])))
+                .then(response => (this.preferes.push(response.data)))
             }           
 
         },
         getMovieInfoVus(tabmovie) {
             for (let index = 0; index < tabmovie.length; index++) {
                 axios.get("/movie/"+tabmovie[index])
-                .then(response => (this.vus.push(response.data.data[0])))
+                .then(response => (this.vus.push(response.data)))
             }           
 
+        },
+        getUserData() {
+            this.current_access_token = store.get_access_token()
+            this.current_user_data = axios.get('/user/users/me/', {
+                params: {
+                token: this.current_access_token
+                }
+            })
+                .then((response) => {
+                console.log(response.data)
+                })
+            console.log(this.current_user_data)
+            return this.current_user_data
         }
     }
 }

@@ -1,5 +1,6 @@
 import motor.motor_asyncio
 from bson.objectid import ObjectId
+from pydantic import EmailStr
 MONGO_DETAILS = "mongodb://fastapi-mongo_mongodb_1:27017"
 
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
@@ -132,8 +133,8 @@ async def add_user(user_data: dict) -> dict:
 
 
 # Retrieve a user with a matching ID
-async def retrieve_user(id: str) -> dict:
-    user = await users.find_one({"_id": ObjectId(id)})
+async def retrieve_user(email: EmailStr) -> dict:
+    user = await users.find_one({"email": email})
     if user:
         return user_helper(user)
 

@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { store } from './../store.js'
 import axios from 'axios'
 axios.defaults.baseURL = 'http://0.0.0.0:5000/'
 export default {
@@ -16,13 +17,16 @@ export default {
         return {
             isDisabled: true,
             infoUser:'',
-            idUser : '62488f129310318cdc2aff1c'
+            idUser : '62488f129310318cdc2aff1c',
+            userData : {},
+            store
         }
     },
      mounted () {
+        this.userData = this.getUserData()
         //this.idUser = récupérer l'id de l'user
-        axios.get("/user/"+this.idUser)
-            .then(response => (this.infoUser = response.data.data[0]))
+        axios.get("/user/"+this.userData.email)
+            .then(response => (this.infoUser = response.data))
         
      },
     methods: {
@@ -36,6 +40,19 @@ export default {
             .then(response => (this.infoUser = response))
             //.then()
             //.catch(e => console.log(e))
+        },
+        getUserData() {
+            this.current_access_token = store.get_access_token()
+            this.current_user_data = axios.get('/user/users/me/', {
+                params: {
+                token: this.current_access_token
+                }
+            })
+                .then((response) => {
+                console.log(response.data)
+                })
+            console.log(this.current_user_data)
+            return this.current_user_data
         }
 
     }
