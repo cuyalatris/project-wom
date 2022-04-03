@@ -17,7 +17,8 @@
                 </ui-form-field>
                 <ui-form-field :class="actionClass">
                     <p hidden>{{ enableSubmit() }}</p>
-                    <ui-button :disabled="isDisabled" @click="open = true" raised>Log In</ui-button>
+                    <!-- <ui-button :disabled="isDisabled" @click="open = true" raised>Log In</ui-button> -->
+                    <ui-button :disabled="isDisabled" @click="logIn()" raised>Log In</ui-button>
                 </ui-form-field>
                 <ui-dialog v-model="open" scrollable @confirm="onConfirm" :escapeKey=false>
                     <ui-dialog-title>
@@ -30,7 +31,7 @@
                     </ui-dialog-content>
                     <ui-dialog-actions>
                         <template #default="{ buttonClass }">
-                            <ui-button :class="buttonClass" acceptText @click="redirectToHome()" raised>Confirm</ui-button>
+                            <ui-button :class="buttonClass" acceptText @click="logIn()" raised>Confirm</ui-button>
                         </template>
                     </ui-dialog-actions>
                 </ui-dialog>
@@ -40,6 +41,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+axios.defaults.baseURL = 'http://0.0.0.0:5000/'
 export default {
     data() {
         return {
@@ -74,6 +77,15 @@ export default {
         },
         redirectToHome() {
             this.$router.push('/accueil')
+        },
+        logIn() {
+            axios.post("/user/token/", {"email":this.valueEmail,"password":this.valuePassword})
+                .then((response) => {
+                    console.log(response)
+                    this.$router.push('/')
+                }, (error) => {
+                    console.log(error)
+                })
         }
     }
 }

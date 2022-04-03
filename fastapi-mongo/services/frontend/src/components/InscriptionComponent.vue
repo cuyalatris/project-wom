@@ -63,7 +63,7 @@ export default {
             return (this.validateEmail() && this.valueEmail1 == this.valueEmail2)
         },
         checkSamePassword() {
-            return this.valuePassword1 == this.valuePassword2
+            return (this.validatePassword() && this.valuePassword1 == this.valuePassword2)
         },
         enableSubmit() {
             if (this.checkSameEmail() && this.checkSamePassword()) {
@@ -89,8 +89,12 @@ export default {
         SignIn() {
         // reformat the payload from [{name: Age, value: 10}, ...] to {Age:10, ...}
             axios.post("/user/", {"userName":this.valueUsername,"email":this.valueEmail1, "password":this.valuePassword1})
-            //.then()
-            //.catch(e => console.log(e))
+                .then((response) => {
+                    console.log(response)
+                    this.$router.go()
+                }, (error) => {
+                    console.log(error)
+                });
         }
 
     }
